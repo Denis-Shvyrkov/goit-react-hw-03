@@ -1,0 +1,29 @@
+.contactList {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  row-gap: 10px;
+  column-gap: 10px;
+  min-width: 100%;
+  padding: 0 10px;
+}
+
+.contact {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  width: calc((100% - 50px) / 4);
+  align-items: center;
+  border: 1px solid #212121;
+  border-radius: 4px;
+  padding: 10px 5px;
+}
+
+.contactInfo {
+  text-align: start;
+}
+
+.deleteBtn {
+  height: 50%;
+  border-radius: 2px;
+}
