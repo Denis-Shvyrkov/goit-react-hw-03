@@ -1,0 +1,34 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  border: 2px solid #212121;
+  padding: 10px;
+  border-radius: 4px;
+  width: 250px;
+}
+
+.formInput {
+  display: flex;
+  flex-direction: column;
+}
+
+.formLabel {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.formBtn {
+  font-size: 14px;
+  font-weight: 500;
+  height: 30px;
+  width: 50%;
+}
+
+.error {
+  color: red;
+
+  font-size: 12px;
+}

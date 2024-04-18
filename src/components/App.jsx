@@ -1,35 +1,77 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ac from './App.module.css';
 import SearchBox from './SearchBox/SearchBox';
 import ContactList from './ContactList/ContactList';
+import ContactForm from './ContactForm/ContactForm';
+import * as Yup from 'yup';
+import { nanoid } from 'nanoid';
+import Notification from './Notification/Notification';
 
-const initialContactList = [
-  { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-  { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-  { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-  { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-  { id: 'id-5', name: 'Luke Skywalker', number: '227-91-30' },
-  { id: 'id-6', name: 'Obi Van Kenobi', number: '227-91-47' },
-];
+const getInitialContacts = () => {
+  const savedContacts = window.localStorage.getItem('contacts');
+  return savedContacts !== null ? JSON.parse(savedContacts) : [];
+};
+
+const initialValues = { name: '', number: '' };
+
+const formValidation = Yup.object().shape({
+  name: Yup.string().min(3, 'Too Short!').max(50, 'Too Long!').required('Required'),
+  number: Yup.string()
+    .min(3, 'Too Short!')
+    .max(50, 'Too Long!')
+    .matches(
+      /(?:([+]\d{1,4})[-.\s]?)?(?:[(](\d{1,3})[)][-.\s]?)?(\d{1,4})[-.\s]?(\d{1,4})[-.\s]?(\d{1,9})/g,
+      'Please enter digits'
+    )
+    .required('Required'),
+});
 
 function App() {
   const [inputValue, setInputValue] = useState('');
-  const [contacts, setContacts] = useState(initialContactList);
+
+  const [contacts, setContacts] = useState(getInitialContacts);
 
   const visibleContacts = contacts.filter(contact =>
     contact.name.toLowerCase().includes(inputValue.toLowerCase())
   );
-  console.log(visibleContacts);
 
   const handleInputValue = e => {
     console.log(e.target.value);
     setInputValue(e.target.value);
   };
 
+  const handleSubmit = (values, actions) => {
+    setContacts(prevContacts => {
+      return [...prevContacts, { id: nanoid(10), name: values.name, number: values.number }];
+    });
+
+    actions.resetForm();
+  };
+
+  const deleteContact = contactId => {
+    setContacts(prevContacts => {
+      return prevContacts.filter(contact => contact.id !== contactId);
+    });
+  };
+
+  useEffect(() => {
+    window.localStorage.setItem('contacts', JSON.stringify(contacts));
+  }, [contacts]);
+
   return (
     <div className={ac.app}>
+      <h1>Phonebook</h1>
+      <ContactForm
+        initialValues={initialValues}
+        onSubmit={handleSubmit}
+        validationSchema={formValidation}
+      />
       <SearchBox inputValue={inputValue} onChange={handleInputValue} />
-      <ContactList contactList={visibleContacts} />
+      {contacts.length !== 0 ? (
+        <ContactList contactList={visibleContacts} onDelete={deleteContact} />
+      ) : (
+        <Notification />
+      )}
     </div>
   );
 }

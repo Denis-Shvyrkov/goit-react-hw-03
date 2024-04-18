@@ -5,7 +5,6 @@
   row-gap: 10px;
   column-gap: 10px;
   min-width: 100%;
-  padding: 0 10px;
 }
 
 .contact {
@@ -14,16 +13,26 @@
   justify-content: space-between;
   width: calc((100% - 50px) / 4);
   align-items: center;
-  border: 1px solid #212121;
+  border: 2px solid #212121;
   border-radius: 4px;
   padding: 10px 5px;
 }
 
 .contactInfo {
-  text-align: start;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.contactIcon {
+  width: 16px;
+  height: 16px;
+  margin-right: 5px;
 }
 
 .deleteBtn {
+  font-size: 14px;
+  font-weight: 500;
   height: 50%;
   border-radius: 2px;
+  border: 1px solid #212121;
 }
