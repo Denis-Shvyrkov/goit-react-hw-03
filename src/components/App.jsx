@@ -4,7 +4,7 @@ import SearchBox from './SearchBox/SearchBox';
 import ContactList from './ContactList/ContactList';
 import ContactForm from './ContactForm/ContactForm';
 import * as Yup from 'yup';
-import { nanoid } from 'nanoid';
+
 import Notification from './Notification/Notification';
 
 const getInitialContacts = () => {
@@ -40,12 +40,10 @@ function App() {
     setInputValue(e.target.value);
   };
 
-  const handleSubmit = (values, actions) => {
+  const onAdd = newContact => {
     setContacts(prevContacts => {
-      return [...prevContacts, { id: nanoid(10), name: values.name, number: values.number }];
+      return [...prevContacts, newContact];
     });
-
-    actions.resetForm();
   };
 
   const deleteContact = contactId => {
@@ -61,11 +59,7 @@ function App() {
   return (
     <div className={ac.app}>
       <h1>Phonebook</h1>
-      <ContactForm
-        initialValues={initialValues}
-        onSubmit={handleSubmit}
-        validationSchema={formValidation}
-      />
+      <ContactForm initialValues={initialValues} onAdd={onAdd} validationSchema={formValidation} />
       <SearchBox inputValue={inputValue} onChange={handleInputValue} />
       {contacts.length !== 0 ? (
         <ContactList contactList={visibleContacts} onDelete={deleteContact} />
