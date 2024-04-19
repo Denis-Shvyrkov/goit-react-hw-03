@@ -36,7 +36,6 @@ function App() {
   );
 
   const handleInputValue = e => {
-    console.log(e.target.value);
     setInputValue(e.target.value);
   };
 
